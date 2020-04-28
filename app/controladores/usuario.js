@@ -1,8 +1,8 @@
-const usuárioModelo = require('../modelos/usuario')
+const usuarioModelo = require('../modelos/usuario')
 
 exports.pegarUsuario = async (req, res, next) => {
     try {
-        usuário = await usuárioModelo.findById(req.params.id)
+        usuário = await usuarioModelo.findById(req.params.id)
         if (usuario == null)
             return res.status(404).json({
                 mensagem: 'usuário não encontrado'
@@ -19,7 +19,7 @@ exports.pegarUsuario = async (req, res, next) => {
 
 exports.listar = async (req, res) => {
     try {
-        const usuário = await usuárioModelo.find()
+        const usuario = await usuarioModelo.find()
         res.json({
             mensagem: `${usuario.length} registro(s) encontrado(s).`,
             data: usuário
@@ -36,7 +36,7 @@ exports.buscar = async (req, res) => {
 }
 
 exports.adicionar = async (req, res) => {
-    const usuário = new usuárioModelo(req.body)
+    const usuario = new usuarioModelo(req.body)
     try {
         const novoUsuario = await usuário.save()
         res.status(201).json({
@@ -58,7 +58,7 @@ exports.atualizar = async (req, res) => {
     }
 
     try {
-        const usuário = await res.usuario.save()
+        const usuario = await res.usuario.save()
         res.json(usuario)
     } catch (error) {
         res.status(400).json({

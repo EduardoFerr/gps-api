@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
+const { SchemaGPS } = require('./gps')
 
 const SchemaUsuario = new mongoose.Schema({
+
     nome: {
         type: String,
         trim: true,
@@ -30,11 +32,10 @@ const SchemaUsuario = new mongoose.Schema({
         trim: true,
         required: true
     },
-    gps: [{
-        id: String,
-        nome: String
-    }]
+    gps: [{ SchemaGPS }],
 }, 
 {
     timestamps: true
 })
+
+module.exports = mongoose.model('Usuario', SchemaUsuario)
