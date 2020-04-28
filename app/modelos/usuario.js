@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
-const SchemaGPS = require('./gps')
 
-const SchemaUsuario = new Mongoose.Schema({
+const SchemaUsuario = new mongoose.Schema({
     nome: {
         type: String,
         trim: true,
