@@ -2,7 +2,7 @@ const usuarioModelo = require('../modelos/usuario')
 
 exports.pegarUsuario = async (req, res, next) => {
     try {
-        usuário = await usuarioModelo.findById(req.params.id)
+        usuario = await usuarioModelo.findById(req.params.id)
         if (usuario == null)
             return res.status(404).json({
                 mensagem: 'usuário não encontrado'
@@ -12,7 +12,7 @@ exports.pegarUsuario = async (req, res, next) => {
             mensagem: error.message || error.statusText || 'Erro ao buscar usuário'
         })
     }
-    res.usuario = usuário
+    res.usuario = usuario
     next()
 }
 
@@ -22,7 +22,7 @@ exports.listar = async (req, res) => {
         const usuario = await usuarioModelo.find()
         res.json({
             mensagem: `${usuario.length} registro(s) encontrado(s).`,
-            data: usuário
+            data: usuario
         })
     } catch (error) {
         res.status(500).json({
@@ -38,7 +38,7 @@ exports.buscar = async (req, res) => {
 exports.adicionar = async (req, res) => {
     const usuario = new usuarioModelo(req.body)
     try {
-        const novoUsuario = await usuário.save()
+        const novoUsuario = await usuario.save()
         res.status(201).json({
             mensagem: 'Adicionado novo usuário',
             data: novoUsuario
