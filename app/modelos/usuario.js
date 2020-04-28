@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
-const { SchemaGPS } = require('./gps')
+const Gps = require('./gps')
 
 const SchemaUsuario = new mongoose.Schema({
-
     nome: {
         type: String,
         trim: true,
@@ -32,7 +31,7 @@ const SchemaUsuario = new mongoose.Schema({
         trim: true,
         required: true
     },
-    gps: [{ SchemaGPS }],
+    gps: [{ Gps }],
 }, 
 {
     timestamps: true
