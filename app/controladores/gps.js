@@ -1,32 +1,31 @@
-const GpsModelo = require('../modelos/gps')
+const gpsModelo = require('../modelos/gps')
 
 exports.pegarGps = async (req, res, next) => {
+    const gps = await res.usuario.gps.id(req.params.id_gps)
     try {
-        gps = await GpsModelo.findById(req.params.id)
         if (gps == null)
             return res.status(404).json({
-                mensagem: 'GPS não encontrado'
+                mensagem: 'Gps não encontrado.'
             })
     } catch (error) {
         return res.status(500).json({
-            mensagem: error.message || error.statusText || 'Erro ao buscar GPS'
+            mensagem: error.message || error.statusText || 'Erro ao buscar gps'
         })
     }
     res.gps = gps
     next()
 }
 
-
 exports.listar = async (req, res) => {
     try {
-        const gps = await GpsModelo.find()
+        const gps = await res.usuario.gps
         res.json({
             mensagem: `${gps.length} registro(s) encontrado(s).`,
             data: gps
         })
     } catch (error) {
         res.status(500).json({
-            mensagem: error.message || error.statusText || "Alguma coisa aconteceu enquanto listava Gps"
+            mensagem: error.message || error.statusText || "Alguma coisa aconteceu enquanto listava gps"
         })
     }
 }
@@ -36,16 +35,18 @@ exports.buscar = async (req, res) => {
 }
 
 exports.adicionar = async (req, res) => {
-    const gps = new GpsModelo(req.body)
+    const gps = new gpsModelo(req.body)
+
     try {
-        const novoGps = await gps.save()
+        res.usuario.gps.push(gps)
+        const callback = await res.usuario.save()
         res.status(201).json({
-            mensagem: 'Adicionado novo GPS',
-            data: novoGps
+            mensagem: 'Adicionado novo gps',
+            data: callback
         })
     } catch (error) {
         res.status(400).json({
-            mensagem: error.message || error.statusText || "Alguma coisa aconteceu na busca Gps"
+            mensagem: error.message || error.statusText || "Alguma coisa aconteceu na busca gps"
         })
     }
 }
@@ -58,21 +59,25 @@ exports.atualizar = async (req, res) => {
     }
 
     try {
-        const gps = await res.gps.save()
-        res.json(gps)
+        const usuario = await res.usuario.save()
+        res.json({
+            mensagem: 'Gps atualizado.',
+            data: usuario.gps.id(req.body.id)
+        })
     } catch (error) {
         res.status(400).json({
-            mensagem: error.message || error.statusText || "Alguma coisa aconteceu ao tentar atualizar Gps"
+            mensagem: error.message || error.statusText || "Alguma coisa aconteceu ao tentar atualizar gps"
         })
     }
-
 }
 
 exports.deletar = async (req, res) => {
+    const gps = res.usuario.gps.pull(res.gps.id)
     try {
-        await res.gps.remove()
+        const callback = await res.usuario.save()
         res.json({
-            mensagem: 'GPS deletado.'
+            mensagem: 'gps deletado.',
+            data: callback
         })
     } catch (error) {
         res.status(500).json({

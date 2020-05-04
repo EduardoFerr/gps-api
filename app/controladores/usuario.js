@@ -1,8 +1,8 @@
 const usuarioModelo = require('../modelos/usuario')
 
 exports.pegarUsuario = async (req, res, next) => {
+    const usuario = await usuarioModelo.findById(req.params.id_usuario)
     try {
-        usuario = await usuarioModelo.findById(req.params.id)
         if (usuario == null)
             return res.status(404).json({
                 mensagem: 'usuário não encontrado'
@@ -53,7 +53,9 @@ exports.adicionar = async (req, res) => {
 exports.atualizar = async (req, res) => {
     for (const key in req.body) {
         if (req.body.hasOwnProperty(key)) {
-            res.usuario[key] = req.body[key]
+            (typeof res.usuario[key] === 'object') ?
+                res.usuario[key].push(req.body[key]) :
+                res.usuario[key] = req.body[key]
         }
     }
 
